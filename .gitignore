@@ -1,0 +1,11 @@
+# Скомпилированные Java-классы
+*.class
+
+# Настройки и файлы IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
