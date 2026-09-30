@@ -1,12 +1,13 @@
 package org.aston.module.yakov.interfaces;
 
 import java.io.IOException;
-import java.util.Collection;
+
+import org.aston.module.yakov.interfaces.dto.IStorageDto;
 
 /**
  *
  * @author yakov
  */
 public interface IBusStorage {
-    public Collection<IBus> getData() throws IOException;
+    public IStorageDto getData() throws IOException;
 }
