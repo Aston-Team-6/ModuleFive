@@ -4,20 +4,20 @@
  */
 package org.aston.module.models;
 
-import org.aston.module.interfaces.IBus;
+import org.aston.module.interfaces.BusContract;
 
 /**
  *
  * @author yakov
  */
-public class Bus implements IBus {
+public class Bus implements BusContract {
 
-    private String number;
-    private String model;
-    private Float mileage;
+    private final String number;
+    private final String model;
+    private final Float mileage;
 
-    public Bus(String Number, String model, Float mileage) {
-        this.number = Number;
+    public Bus(String number, String model, Float mileage) {
+        this.number = number;
         this.model = model;
         this.mileage = mileage;
     }
@@ -36,5 +36,4 @@ public class Bus implements IBus {
     public Float getMileage() {
         return mileage;
     }
-
 }

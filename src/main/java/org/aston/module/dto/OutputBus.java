@@ -2,18 +2,17 @@ package org.aston.module.dto;
 
 import java.util.Collection;
 
-import org.aston.module.interfaces.IBus;
+import org.aston.module.interfaces.BusContract;
 
 /**
  *
  * @author yakov
  */
-public class OutputBusDto {
-
-    public final Collection<IBus> busCollection;
+public class OutputBus {
+    public final Collection<BusContract> busCollection;
     public final int busCount;
 
-    public OutputBusDto(Collection<IBus> busCollection, int busCount) {
+    public OutputBus(Collection<BusContract> busCollection, int busCount) {
         this.busCollection = busCollection;
         this.busCount = busCount;
     }

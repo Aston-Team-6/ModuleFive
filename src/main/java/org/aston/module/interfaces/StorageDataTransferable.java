@@ -6,8 +6,8 @@ import java.util.Collection;
  *
  * @author yakov
  */
-public interface IStorageDto {
-    public Collection<IBus> getBusList();
+public interface StorageDataTransferable {
+    public Collection<BusContract> getBusList();
 
     public int getCount();
 }
