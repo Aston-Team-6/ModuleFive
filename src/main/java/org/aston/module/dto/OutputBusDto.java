@@ -1,4 +1,4 @@
-package org.aston.module.interfaces.dto;
+package org.aston.module.dto;
 
 import java.util.Collection;
 

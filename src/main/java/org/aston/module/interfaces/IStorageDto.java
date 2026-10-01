@@ -1,8 +1,6 @@
-package org.aston.module.interfaces.dto;
+package org.aston.module.interfaces;
 
 import java.util.Collection;
-
-import org.aston.module.interfaces.IBus;
 
 /**
  *

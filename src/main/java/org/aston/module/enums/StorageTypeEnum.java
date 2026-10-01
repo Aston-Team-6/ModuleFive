@@ -1,4 +1,4 @@
-package org.aston.module.Enums;
+package org.aston.module.enums;
 
 /**
  *
