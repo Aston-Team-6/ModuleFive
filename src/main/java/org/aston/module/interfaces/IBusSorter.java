@@ -1,4 +1,4 @@
-package org.aston.module.yakov.interfaces;
+package org.aston.module.interfaces;
 
 import java.util.Collection;
 

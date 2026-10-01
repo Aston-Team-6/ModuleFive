@@ -1,4 +1,4 @@
-package org.aston.module.yakov;
+package org.aston.module.Enums;
 
 /**
  *

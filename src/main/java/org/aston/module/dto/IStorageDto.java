@@ -1,8 +1,8 @@
-package org.aston.module.yakov.interfaces.dto;
+package org.aston.module.dto;
 
 import java.util.Collection;
 
-import org.aston.module.yakov.interfaces.IBus;
+import org.aston.module.interfaces.IBus;
 
 /**
  *
