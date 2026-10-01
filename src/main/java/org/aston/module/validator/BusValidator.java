@@ -19,9 +19,9 @@ public class BusValidator {
     }
 
     private static void validateMileage(Float mileageBus) {
-        if(Float.isNaN(mileageBus) || Float.isInfinite(mileageBus)) {
-            throw new IllegalArgumentException("Пробег содержит невозможные значения");
-        } else if(mileageBus < 0) {
+        if(mileageBus == null){
+            throw new IllegalArgumentException("Пробег содержит null");
+        } else if(Float.isNaN(mileageBus) || Float.isInfinite(mileageBus) || mileageBus < 0) {
             throw new IllegalArgumentException("Пробег содержит невозможные значения");
         }
     }
