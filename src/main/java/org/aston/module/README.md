@@ -17,9 +17,9 @@
 Интерфейс ``IBusStorageFactory`` - это фабрика, которая должна отдавать ``IBusStorage``. На основе класса enum ``StorageTypeEnum`` определяет какую реализацию интерфейса ``IBusStorage`` необходимо отдать. 
 
 ```java
-import org.aston.module.yakov.interfaces.factories.IBusStorageFactory;
-import org.aston.module.yakov.StorageTypeEnum;
-import org.aston.module.yakov.interfaces.IBusStorage;
+import org.aston.module.interfaces.factories.IBusStorageFactory;
+import org.aston.module.StorageTypeEnum;
+import org.aston.module.interfaces.IBusStorage;
 
 public class BusStorageFactory implements IBusStorageFactory {
     public IBusStorage create(StorageTypeEnum storageType) {
@@ -37,9 +37,9 @@ public class BusStorageFactory implements IBusStorageFactory {
 
 ```java
 
-import org.aston.module.yakov.interfaces.factories.IBusSorterFactory;
-import org.aston.module.yakov.SorterTypeEnum;
-import org.aston.module.yakov.interfaces.IBusSorter;
+import org.aston.module.interfaces.factories.IBusSorterFactory;
+import org.aston.module.SorterTypeEnum;
+import org.aston.module.interfaces.IBusSorter;
 
 public class BusSorterFactory implements IBusSorterFactory {
     public IBusSorter create(SorterTypeEnum sorterType) {
