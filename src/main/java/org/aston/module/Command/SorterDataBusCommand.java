@@ -1,6 +1,6 @@
 package org.aston.module.Command;
 
-import org.aston.module.dto.OutputBusDto;
+import org.aston.module.interfaces.dto.OutputBusDto;
 import org.aston.module.Enums.SorterTypeEnum;
 import org.aston.module.Enums.StorageTypeEnum;
 import org.aston.module.interfaces.factories.IBusSorterFactory;
