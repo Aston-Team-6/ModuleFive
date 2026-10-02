@@ -1,30 +1,28 @@
 package org.aston.module.controller.builder;
-import org.aston.module.controller.validator.BusDataValidator;
-import org.aston.module.interfaces.BuilderContract;
 import org.aston.module.models.Bus;
-import org.aston.module.controller.validator.BusDataValidator;
-public class BusBuilder implements BuilderContract{
+
+public class BusBuilder {
     private String number;
     private String model;
     private Float mileage;
 
-    @Override
-    public void setNumber(String number) {
+    public BusBuilder setNumber(String number) {
         this.number = number;
+        return this;
     }
 
-    @Override
-    public void setModel(String model) {
+    public BusBuilder setModel(String model) {
         this.model = model;
+        return this;
     }
 
-    @Override
-    public void setMileage(Float mileage) {
+    public BusBuilder setMileage(Float mileage) {
         this.mileage = mileage;
+        return this;
     }
 
     public Bus build() {
-        BusDataValidator.validator(number, model, mileage);
+        // BusDataValidator.validator(number, model, mileage);
         return new Bus(number, model, mileage);
     }
 
