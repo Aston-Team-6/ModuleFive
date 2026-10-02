@@ -1,10 +1,10 @@
-package org.aston.module.yakov.interfaces;
+package org.aston.module.interfaces;
 
 /**
  *
  * @author yakov
  */
-public interface IBus {
+public interface BusContract {
 
     public String getNumber();
 
