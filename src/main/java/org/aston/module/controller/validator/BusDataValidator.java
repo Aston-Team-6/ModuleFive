@@ -6,19 +6,19 @@ public class BusDataValidator {
         validateModel(modelBus);
         validateMileage(mileageBus);
     }*/
-    public static void validateNumber(String numberBus) {
+    public void validateNumber(String numberBus) {
         if(numberBus == null || numberBus.isBlank() ) {
             throw new IllegalArgumentException("Введеный номер не прошел валидацию");
         }
     }
 
-    public static void  validateModel(String modelBus) {
+    public void  validateModel(String modelBus) {
         if(modelBus == null || modelBus.isBlank()) {
             throw new IllegalArgumentException("Введеная модель не прошла валидацию");
         }
     }
 
-    public static void validateMileage(Float mileageBus) {
+    public void validateMileage(Float mileageBus) {
         if(mileageBus == null){
             throw new IllegalArgumentException("Пробег содержит null");
         } else if(Float.isNaN(mileageBus) || Float.isInfinite(mileageBus) || mileageBus < 0) {
