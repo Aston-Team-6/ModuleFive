@@ -1,11 +1,11 @@
 package org.aston.module.controller.validator;
 
-public class BusValidator {
-    public static void validator(String numberBus, String modelBus, Float mileageBus) {
+public class BusDataValidator {
+    /*public static void validator(String numberBus, String modelBus, Float mileageBus) {
         validateNumber(numberBus);
         validateModel(modelBus);
         validateMileage(mileageBus);
-    }
+    }*/
     public static void validateNumber(String numberBus) {
         if(numberBus == null || numberBus.isBlank() ) {
             throw new IllegalArgumentException("Введеный номер не прошел валидацию");

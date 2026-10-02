@@ -1,7 +1,8 @@
 package org.aston.module.controller.builder;
+import org.aston.module.controller.validator.BusDataValidator;
 import org.aston.module.interfaces.BuilderContract;
 import org.aston.module.models.Bus;
-import org.aston.module.controller.validator.BusValidator;
+import org.aston.module.controller.validator.BusDataValidator;
 public class BusBuilder implements BuilderContract{
     private String number;
     private String model;
@@ -22,8 +23,8 @@ public class BusBuilder implements BuilderContract{
         this.mileage = mileage;
     }
 
-    public Bus busBuild() {
-        BusValidator.validator(number, model, mileage);
+    public Bus build() {
+        BusDataValidator.validator(number, model, mileage);
         return new Bus(number, model, mileage);
     }
 
