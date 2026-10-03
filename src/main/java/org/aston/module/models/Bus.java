@@ -36,4 +36,9 @@ public class Bus implements BusContract {
     public Float getMileage() {
         return mileage;
     }
+
+    @Override
+    public String toString() {
+        return String.format("number: %s,\tmodel: %s\t, mileage: %f",number, model, mileage);
+    }
 }
