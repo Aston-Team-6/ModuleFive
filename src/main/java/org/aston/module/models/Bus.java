@@ -4,6 +4,8 @@
  */
 package org.aston.module.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.aston.module.interfaces.BusContract;
 
 /**
@@ -15,8 +17,10 @@ public class Bus implements BusContract {
     private final String number;
     private final String model;
     private final Float mileage;
-
-    public Bus(String number, String model, Float mileage) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public Bus(@JsonProperty("number") String number,
+               @JsonProperty("model") String model,
+               @JsonProperty("mileage") Float mileage) {
         this.number = number;
         this.model = model;
         this.mileage = mileage;
