@@ -7,18 +7,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.aston.module.controller.builder.BusBuilder;
+import org.aston.module.controller.validator.BusDataValidator;
 import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
 import org.aston.module.interfaces.BusStorageable;
 import org.aston.module.interfaces.StorageDataTransferable;
-import org.aston.module.models.Bus;
 
 public class UsersInput implements BusStorageable {
 	private Scanner scanner;
+	private BusDataValidator validator;
 	private int length;
 	
 	{
 		scanner = new Scanner(System.in);
+		validator = new BusDataValidator();
 	}
 	
 	public int getLength() {
@@ -28,21 +30,21 @@ public class UsersInput implements BusStorageable {
 	private String inputNumber() {
 		System.out.println("Input the bus number");
 		String number = scanner.next();
-		//validate data...
+		validator.validateNumber(number);
 		return number;
 	}
 	
 	private String inputModel() {
 		System.out.println("Input the bus model");
 		String model = scanner.next();
-		//validate data...
+		validator.validateModel(model);
 		return model;
 		
 	}
-	private float inputMileage() {
+	private Float inputMileage() {
 		System.out.println("Input the bus mileage");
-		float mileage = scanner.nextFloat();
-		//validate data...
+		Float mileage = scanner.nextFloat();
+		validator.validateMileage(mileage);
 		return mileage;
 	}
 

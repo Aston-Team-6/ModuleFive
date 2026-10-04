@@ -1,11 +1,11 @@
 package org.aston.module.controller.generators;
 
 import org.aston.module.controller.builder.BusBuilder;
+import org.aston.module.controller.validator.BusDataValidator;
 import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
 import org.aston.module.interfaces.BusStorageable;
 import org.aston.module.interfaces.StorageDataTransferable;
-import org.aston.module.models.Bus;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -16,10 +16,12 @@ import java.util.stream.Stream;
 public class RandomGenerator implements BusStorageable
 {
 	private static Random rand;
+	private BusDataValidator validator;
 	private int length;
 	
 	{
 		rand = new Random();
+		validator = new BusDataValidator();
 	}
 
 	public int getLength() {
@@ -33,7 +35,9 @@ public class RandomGenerator implements BusStorageable
 			temp.append(c);
 		int route = rand.nextInt(2500);
 		temp.append(route);
-		return temp.toString();
+		String number = temp.toString();
+		validator.validateNumber(number);
+		return number;
 	}
 
 	private String generateModel() {
@@ -45,11 +49,15 @@ public class RandomGenerator implements BusStorageable
 		}
 		int modelNumber = rand.nextInt(9999);
 		temp.append(modelNumber);
-		return temp.toString().toUpperCase();
+		String model = temp.toString().toUpperCase();;
+		validator.validateModel(model);
+		return model;
 	}
 
-	private float generateMileage() {
-		return rand.nextInt(0, 200000) + rand.nextFloat();
+	private Float generateMileage() {
+		Float mileage = rand.nextInt(0, 200000) + rand.nextFloat();
+		validator.validateMileage(mileage);
+		return mileage;
 	}
 	
 	private BusContract createBus() {
