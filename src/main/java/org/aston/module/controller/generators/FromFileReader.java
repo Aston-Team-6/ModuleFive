@@ -39,10 +39,13 @@ public class FromFileReader implements BusStorageable {
         return Files.exists(Paths.get(filename));
     }
 
-    public boolean isValidFileFormat(String filename, String fileExtension) {
+    public boolean isValidFileFormat(String filename, String fileExtension) throws IOException {
         int dotIndex = filename.lastIndexOf('.');
-        String extension = filename.substring(dotIndex + 1);
-        return extension.equals(fileExtension.toUpperCase());
+        if(dotIndex != -1) {
+            String extension = filename.substring(dotIndex + 1);
+            return extension.equals(fileExtension.toUpperCase());
+        }
+        throw new IOException("Неверный формат файла!");
     }
 
     public BusContract createBus(String info) {
