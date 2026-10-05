@@ -6,6 +6,7 @@ import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
 import org.aston.module.interfaces.BusStorageable;
 import org.aston.module.interfaces.StorageDataTransferable;
+import org.aston.module.value.objects.Length;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -17,14 +18,18 @@ public class RandomGenerator implements BusStorageable
 {
 	private static Random rand;
 	private BusDataValidator validator;
-	private int length;
-	
+	private Length length;
+	public RandomGenerator(Length length)
+	{
+		this.length = length;
+	}
+
 	{
 		rand = new Random();
 		validator = new BusDataValidator();
 	}
 
-	public int getLength() {
+	public Length getLength() {
 		return length;
 	}
 
@@ -66,17 +71,16 @@ public class RandomGenerator implements BusStorageable
 				.setMileage(generateMileage()).build();
 	}
 	
-	public Collection<BusContract> fillCollection(int length) {
-		this.length = length;
+	public Collection<BusContract> fillCollection() {
 		Collection<BusContract> buses = Stream
 				.generate(() -> createBus())
-				.limit(length)
+				.limit(length.getValue())
 				.collect(Collectors.toList());
 		return buses;
 	}
 
 	@Override
 	public StorageDataTransferable getData() throws IOException {
-		return new BusFromStorage(fillCollection(length), length);
+		return new BusFromStorage(fillCollection(), length.getValue());
 	}
 }

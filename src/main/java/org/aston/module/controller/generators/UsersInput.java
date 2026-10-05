@@ -12,18 +12,23 @@ import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
 import org.aston.module.interfaces.BusStorageable;
 import org.aston.module.interfaces.StorageDataTransferable;
+import org.aston.module.value.objects.Length;
 
 public class UsersInput implements BusStorageable {
 	private Scanner scanner;
 	private BusDataValidator validator;
-	private int length;
-	
+	private Length length;
+	public UsersInput(Length length)
+	{
+		this.length = length;
+	}
+
 	{
 		scanner = new Scanner(System.in);
 		validator = new BusDataValidator();
 	}
 	
-	public int getLength() {
+	public Length getLength() {
 		return length;
 	}
 	
@@ -56,11 +61,10 @@ public class UsersInput implements BusStorageable {
 		return item;
 	}
 
-	public Collection<BusContract> fillCollection(int length) {
-		this.length = length;
+	public Collection<BusContract> fillCollection() {
 		Collection<BusContract> buses = Stream
 				.generate(()->createBus())
-				.limit(length)
+				.limit(length.getValue())
 				.collect(Collectors.toList());
 		System.out.println("Collection filled");
 		return buses;
@@ -68,6 +72,6 @@ public class UsersInput implements BusStorageable {
 
 	@Override
 	public StorageDataTransferable getData() throws IOException {
-		return new BusFromStorage(fillCollection(length), length);
+		return new BusFromStorage(fillCollection(), length.getValue());
 	}
 }
