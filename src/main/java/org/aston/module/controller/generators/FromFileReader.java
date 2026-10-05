@@ -6,7 +6,9 @@ import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
 import org.aston.module.interfaces.BusStorageable;
 import org.aston.module.interfaces.StorageDataTransferable;
+import org.aston.module.value.objects.Length;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,15 +18,34 @@ import java.util.stream.Collectors;
 public class FromFileReader implements BusStorageable {
     private String filename;
     private BusDataValidator validator;
-    private int length;
+    private Length length;
 
-    public FromFileReader(String filename) {
-        this.filename = filename;
+    public FromFileReader(String filename, Length length) throws IOException {
+        if(fileExists(filename)) {
+            if (isValidFileFormat(filename, "csv"))
+                this.filename = filename;
+            else
+                throw new IOException("Неверный формат файла!");
+        }else
+            throw new FileNotFoundException("Файл не существует!");
+        this.length = length;
+    }
+
+    {
         validator = new BusDataValidator();
     }
 
-    public BusContract createBus(String info) {
+    public boolean fileExists(String filename) {
+        return Files.exists(Paths.get(filename));
+    }
 
+    public boolean isValidFileFormat(String filename, String fileExtension) {
+        int dotIndex = filename.lastIndexOf('.');
+        String extension = filename.substring(dotIndex + 1);
+        return extension.equals(fileExtension.toUpperCase());
+    }
+
+    public BusContract createBus(String info) {
         String[] parameters = info.split(";");
         String number = parameters[0];
         validator.validateNumber(number);
@@ -37,13 +58,12 @@ public class FromFileReader implements BusStorageable {
                 .setMileage(mileage).build();
     }
 
-    public Collection<BusContract> fillCollection(int length) {
-        this.length = length;
+    public Collection<BusContract> fillCollection() {
         Collection<BusContract> buses = null;
         try {
             buses = Files.readAllLines(Paths.get(filename)).stream()
                     .map(line -> {return createBus(line);})
-                    .limit(length)
+                    .limit(length.getValue())
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,6 +73,6 @@ public class FromFileReader implements BusStorageable {
 
     @Override
     public StorageDataTransferable getData() throws IOException {
-        return new BusFromStorage(fillCollection(length), length);
+        return new BusFromStorage(fillCollection(), length.getValue());
     }
 }
