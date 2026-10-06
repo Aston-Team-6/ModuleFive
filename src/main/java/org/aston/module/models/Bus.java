@@ -17,10 +17,8 @@ public class Bus implements BusContract {
     private final String number;
     private final String model;
     private final Float mileage;
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Bus(@JsonProperty("number") String number,
-               @JsonProperty("model") String model,
-               @JsonProperty("mileage") Float mileage) {
+
+    public Bus(String number, String model, Float mileage) {
         this.number = number;
         this.model = model;
         this.mileage = mileage;
@@ -43,6 +41,6 @@ public class Bus implements BusContract {
 
     @Override
     public String toString() {
-        return String.format("number: %s,\tmodel: %s\t, mileage: %.2f",number, model, mileage);
+        return String.format("number: %s,\tmodel: %s\t, mileage: %.2f", number, model, mileage);
     }
 }

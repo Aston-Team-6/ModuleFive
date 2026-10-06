@@ -13,8 +13,8 @@ import java.util.Collection;
 public abstract class BusCollectionGenerator implements BusStorageable {
     protected BusDataValidator validator;
     protected Length length;
-    public BusCollectionGenerator(Length length)
-    {
+
+    public BusCollectionGenerator(Length length) {
         this.length = length;
     }
 

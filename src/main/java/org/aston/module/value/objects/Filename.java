@@ -6,10 +6,11 @@ public class Filename {
     private String filename;
 
     public Filename(String filename, String fileExtension) throws IOException {
-        if(isValidFileFormat(filename, fileExtension))
+        if (isValidFileFormat(filename, fileExtension)) {
             this.filename = filename;
-        else throw new IOException("Неверный формат файла!");
-
+        } else {
+            throw new IOException("Неверный формат файла!");
+        }
     }
 
     public boolean isValidFileFormat(String filename, String fileExtension) throws IOException {
@@ -21,7 +22,7 @@ public class Filename {
         throw new IOException("Неверный формат файла!");
     }
 
-    public String getValue(){
+    public String getValue() {
         return filename;
     }
 }

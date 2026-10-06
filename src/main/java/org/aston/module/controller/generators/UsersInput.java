@@ -12,8 +12,7 @@ import org.aston.module.value.objects.Length;
 public class UsersInput extends BusCollectionGenerator{
 	private Scanner scanner;
 
-	public UsersInput(Length length)
-	{
+	public UsersInput(Length length) {
         super(length);
 	}
 
@@ -58,5 +57,4 @@ public class UsersInput extends BusCollectionGenerator{
 		System.out.println("Collection filled");
 		return buses;
 	}
-
 }

@@ -15,13 +15,14 @@ import java.util.stream.Collectors;
 public class FromFileReader extends BusCollectionGenerator {
     private Filename filename;
 
-
     public FromFileReader(Filename filename, Length length) throws IOException {
         super(length);
-        if(fileExists(filename.getValue()))
+        if (fileExists(filename.getValue())) {
             this.filename = filename;
-        else
+        }
+        else {
             throw new FileNotFoundException("Файл не существует!");
+        }
     }
 
     public boolean fileExists(String filename) {
@@ -45,7 +46,9 @@ public class FromFileReader extends BusCollectionGenerator {
         Collection<BusContract> buses = null;
         try {
             buses = Files.readAllLines(Paths.get(filename.getValue())).stream()
-                    .map(line -> {return createBus(line);})
+                    .map(line -> {
+                        return createBus(line);
+                    })
                     .limit(length.getValue())
                     .collect(Collectors.toList());
         } catch (IOException e) {
@@ -53,5 +56,4 @@ public class FromFileReader extends BusCollectionGenerator {
         }
         return buses;
     }
-
 }

@@ -21,10 +21,12 @@ public class FromJSONReader extends BusCollectionGenerator {
 
     public FromJSONReader(Filename filename, Length length) throws IOException {
         super(length);
-        if (fileExists(filename.getValue()))
+        if (fileExists(filename.getValue())) {
             this.filename = filename;
-        else
+        }
+        else {
             throw new FileNotFoundException("Файл не существует!");
+        }
     }
 
     public boolean fileExists(String filename) {
@@ -85,5 +87,4 @@ public class FromJSONReader extends BusCollectionGenerator {
                 .collect(Collectors.toList());
         return buses;
     }
-
 }
