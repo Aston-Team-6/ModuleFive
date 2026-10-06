@@ -4,6 +4,8 @@
  */
 package org.aston.module.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.aston.module.interfaces.BusContract;
 
 /**
@@ -35,5 +37,10 @@ public class Bus implements BusContract {
     @Override
     public Float getMileage() {
         return mileage;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("number: %s,\tmodel: %s\t, mileage: %.2f", number, model, mileage);
     }
 }
