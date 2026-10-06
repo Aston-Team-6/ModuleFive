@@ -43,6 +43,6 @@ public class Bus implements BusContract {
 
     @Override
     public String toString() {
-        return String.format("number: %s,\tmodel: %s\t, mileage: %f",number, model, mileage);
+        return String.format("number: %s,\tmodel: %s\t, mileage: %.2f",number, model, mileage);
     }
 }
