@@ -1,36 +1,24 @@
 package org.aston.module.controller.generators;
 
 import org.aston.module.controller.builder.BusBuilder;
-import org.aston.module.controller.validator.BusDataValidator;
-import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
-import org.aston.module.interfaces.BusStorageable;
-import org.aston.module.interfaces.StorageDataTransferable;
 import org.aston.module.value.objects.Length;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class RandomGenerator implements BusStorageable
-{
-	private static Random rand;
-	private BusDataValidator validator;
-	private Length length;
+public class RandomGenerator extends BusCollectionGenerator
+{	private static Random rand;
+
 	public RandomGenerator(Length length)
 	{
-		this.length = length;
+		super(length);
 	}
 
 	{
 		rand = new Random();
-		validator = new BusDataValidator();
-	}
-
-	public Length getLength() {
-		return length;
 	}
 
 	private String generateRouteNumber() {
@@ -79,8 +67,4 @@ public class RandomGenerator implements BusStorageable
 		return buses;
 	}
 
-	@Override
-	public StorageDataTransferable getData() throws IOException {
-		return new BusFromStorage(fillCollection(), length.getValue());
-	}
 }

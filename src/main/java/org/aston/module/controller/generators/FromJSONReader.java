@@ -4,11 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aston.module.controller.builder.BusBuilder;
-import org.aston.module.controller.validator.BusDataValidator;
-import org.aston.module.dto.BusFromStorage;
 import org.aston.module.interfaces.BusContract;
-import org.aston.module.interfaces.BusStorageable;
-import org.aston.module.interfaces.StorageDataTransferable;
+import org.aston.module.value.objects.Filename;
 import org.aston.module.value.objects.Length;
 
 import java.io.FileNotFoundException;
@@ -19,40 +16,25 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class FromJSONReader implements BusStorageable {
-    private String filename;
-    private BusDataValidator validator;
-    private Length length;
+public class FromJSONReader extends BusCollectionGenerator {
+    private Filename filename;
 
-    public FromJSONReader(String filename, Length length) throws IOException {
-        if(fileExists(filename)) {
-            if (isValidFileFormat(filename, "json"))
-                this.filename = filename;
-            else
-                throw new IOException("Неверный формат файла!");
-        }else
+    public FromJSONReader(Filename filename, Length length) throws IOException {
+        super(length);
+        if (fileExists(filename.getValue()))
+            this.filename = filename;
+        else
             throw new FileNotFoundException("Файл не существует!");
-        this.length = length;
-    }
-
-    {
-        validator = new BusDataValidator();
     }
 
     public boolean fileExists(String filename) {
         return Files.exists(Paths.get(filename));
     }
 
-    public boolean isValidFileFormat(String filename, String fileExtension) throws IOException {
-        int dotIndex = filename.lastIndexOf('.');
-        if(dotIndex != -1) {
-            String extension = filename.substring(dotIndex + 1);
-            return extension.equals(fileExtension.toUpperCase());
-        }
-        throw new IOException("Неверный формат файла!");
-    }
     public BusContract createBus(String jsonLine) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+        if (jsonLine.startsWith("["))
+            jsonLine = jsonLine.substring(1);
         var reader = new StringReader(jsonLine);
         String routeNumber = null;
         String model = null;
@@ -65,20 +47,21 @@ public class FromJSONReader implements BusStorageable {
                 String fieldName = jsonParser.currentName();
                 jsonParser.nextToken();
                 switch (fieldName) {
-                    case "number":
+                    case "number" -> {
                         routeNumber = jsonParser.getValueAsString();
                         validator.validateNumber(routeNumber);
-                        break;
-                    case "model":
+                    }
+
+                    case "model" -> {
                         model = jsonParser.getValueAsString();
                         validator.validateModel(model);
-                        break;
-                    case "mileage":
+                    }
+
+                    case "mileage" -> {
                         mileage = jsonParser.getFloatValue();
                         validator.validateMileage(mileage);
-                        break;
-                    default:
-                        throw new IllegalStateException("Неожиданное значение: " + fieldName);
+                    }
+                    default -> throw new IllegalStateException("Неожиданное значение: " + fieldName);
                 }
             }
         }
@@ -89,10 +72,8 @@ public class FromJSONReader implements BusStorageable {
 
     public Collection<BusContract> fillCollection() throws IOException {
         Collection<BusContract> buses = null;
-        buses = Files.readAllLines(Paths.get(filename)).stream()
+        buses = Files.readAllLines(Paths.get(filename.getValue())).stream()
                 .map(line -> {
-                    if(line.startsWith("["))
-                        line = line.substring(1);
                     try {
                         return createBus(line);
                     } catch (IOException e) {
@@ -105,8 +86,4 @@ public class FromJSONReader implements BusStorageable {
         return buses;
     }
 
-    @Override
-    public StorageDataTransferable getData() throws IOException {
-        return new BusFromStorage(fillCollection(), length.getValue());
-    }
 }
