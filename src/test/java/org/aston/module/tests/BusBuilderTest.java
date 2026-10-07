@@ -1,5 +1,7 @@
-import org.aston.module.controller.builder.BusBuilder;
-import org.aston.module.interfaces.BusContract;
+package  org.aston.module.tests;
+
+import org.aston.module.domain.builder.BusBuilder;
+import org.aston.module.domain.ports.BusContract;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
  

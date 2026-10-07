@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.aston.module.controller.generators.FromJSONReader;
-import org.aston.module.interfaces.BusContract;
-import org.aston.module.value.objects.JsonFilename;
-import org.aston.module.value.objects.Length;
+import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.objects.JsonFilename;
+import org.aston.module.domain.values.objects.Length;
+import org.aston.module.infrastructure.generators.FromJSONReader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
