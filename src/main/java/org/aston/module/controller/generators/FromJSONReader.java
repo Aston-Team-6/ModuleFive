@@ -79,9 +79,9 @@ public class FromJSONReader extends BusCollectionGenerator {
                     try {
                         return createBus(line);
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
+                        throw new RuntimeException(e);
                     }
+
                 })
                 .limit(length.getValue())
                 .collect(Collectors.toList());
