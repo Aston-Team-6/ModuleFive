@@ -27,8 +27,7 @@ public class FromJSONReader extends BusCollectionGenerator {
         super(length);
         if (fileExists(filename.getValue())) {
             this.filename = filename;
-        }
-        else {
+        } else {
             throw new FileNotFoundException("Файл не существует!");
         }
     }
@@ -40,7 +39,8 @@ public class FromJSONReader extends BusCollectionGenerator {
     public List<Map<String, Object>> getMapsFromJSON() throws IOException {
         File file = new File(filename.getValue());
         ObjectMapper mapper = new ObjectMapper();
-       return mapper.readValue(file, new TypeReference<List<Map<String, Object>>>(){});
+        return mapper.readValue(file, new TypeReference<List<Map<String, Object>>>() {
+        });
     }
 
     public BusContract createBus(String routeNumber, String model, Float mileage) {
@@ -56,7 +56,7 @@ public class FromJSONReader extends BusCollectionGenerator {
         return getMapsFromJSON().stream()
                 .map(item -> {
                     var fieldValues = item.values().toArray();
-                    return createBus((String)fieldValues[0], (String)fieldValues[1], Float.valueOf(fieldValues[2].toString()));
+                    return createBus((String) fieldValues[0], (String) fieldValues[1], Float.valueOf(fieldValues[2].toString()));
                 })
                 .limit(length.getValue())
                 .collect(Collectors.toList());
