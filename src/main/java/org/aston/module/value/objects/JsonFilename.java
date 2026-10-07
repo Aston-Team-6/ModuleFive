@@ -6,7 +6,7 @@ public class JsonFilename {
     private String filename;
 
     public JsonFilename(String filename) throws IOException {
-        if (isValidFileFormat(filename, fileExtension)) {
+        if (isValidFileFormat(filename)) {
             this.filename = filename;
         } else {
             throw new IOException("Неверный формат файла!");
