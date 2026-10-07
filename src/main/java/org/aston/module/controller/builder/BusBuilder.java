@@ -22,7 +22,6 @@ public class BusBuilder {
     }
 
     public Bus build() {
-        // BusDataValidator.validator(number, model, mileage);
         return new Bus(number, model, mileage);
     }
 
