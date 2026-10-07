@@ -1,13 +1,16 @@
 package org.aston.module;
 
+import org.aston.module.menu.Menu;
+
 /**
  *
  * @author yakov
  */
 public class TaskFive {
 
-    public static void main(String[] args) {
-        
+    static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.start();
     }
 }
 
