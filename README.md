@@ -10,14 +10,12 @@
 1. Java `25`.
 2. Система сборки: `Maven 3.8+`
 
-## Установка и запуск
+## Установка
 
 ```bash
 git clone https://github.com/Aston-Team-6/ModuleFive module-five
 cd module-five
-mvn clean package
-java -jar target/project-name.jar
-
+mvn clean isntall
 ```
 
 ## Тестирование
