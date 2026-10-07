@@ -1,6 +1,6 @@
 package org.aston.module;
 
-import org.aston.module.menu.Menu;
+import org.aston.module.presentation.view.Menu;
 
 /**
  *

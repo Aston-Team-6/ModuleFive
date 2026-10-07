@@ -1,4 +1,6 @@
-import org.aston.module.controller.validator.BusDataValidator;
+package  org.aston.module.tests;
+
+import org.aston.module.presentation.validator.BusDataValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

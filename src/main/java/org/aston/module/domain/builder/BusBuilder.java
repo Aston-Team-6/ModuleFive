@@ -1,0 +1,35 @@
+package org.aston.module.domain.builder;
+
+import org.aston.module.domain.entities.Bus;
+
+
+public class BusBuilder {
+    private String number;
+    private String model;
+    private Float mileage;
+
+    public BusBuilder setNumber(String number) {
+        this.number = number;
+        return this;
+    }
+
+    public BusBuilder setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    public BusBuilder setMileage(Float mileage) {
+        this.mileage = mileage;
+        return this;
+    }
+
+    public Bus build() {
+        return new Bus(number, model, mileage);
+    }
+
+    public void busReset() {
+        number = null;
+        model = null;
+        mileage = null;
+    }
+}

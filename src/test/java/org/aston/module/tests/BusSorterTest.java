@@ -1,11 +1,13 @@
+package  org.aston.module.tests;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.aston.module.controller.sort.BusMileageSorter;
-import org.aston.module.controller.sort.BusModelSorter;
-import org.aston.module.controller.sort.BusNumberSorter;
-import org.aston.module.interfaces.BusContract;
-import org.aston.module.interfaces.BusSorterable;
+import org.aston.module.application.ports.BusSorterable;
+import org.aston.module.domain.ports.BusContract;
+import org.aston.module.infrastructure.sort.BusMileageSorter;
+import org.aston.module.infrastructure.sort.BusModelSorter;
+import org.aston.module.infrastructure.sort.BusNumberSorter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
