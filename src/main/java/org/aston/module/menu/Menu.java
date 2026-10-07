@@ -18,6 +18,8 @@ import org.aston.module.values.enums.StorageType;
 import java.io.IOException;
 import java.util.Scanner;
 
+import org.aston.module.value.objects.Filename;
+
 public class Menu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -97,7 +99,8 @@ public class Menu {
                 String path = scanner.nextLine().trim();
                 BusStorageable storage = null;
                 try {
-                    storage = new FromJSONReader(path, len);
+                    Filename filename = new Filename(path, "JSON");
+                    storage = new FromJSONReader(filename, len);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
