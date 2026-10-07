@@ -1,5 +1,8 @@
 package org.aston.module.menu;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 import org.aston.module.actions.SorterDataBusAction;
 import org.aston.module.controller.generators.FromJSONReader;
 import org.aston.module.controller.generators.RandomGenerator;
@@ -11,14 +14,10 @@ import org.aston.module.dto.OutputBus;
 import org.aston.module.interfaces.BusContract;
 import org.aston.module.interfaces.BusSorterable;
 import org.aston.module.interfaces.BusStorageable;
+import org.aston.module.value.objects.JsonFilename;
 import org.aston.module.value.objects.Length;
 import org.aston.module.values.enums.SorterType;
 import org.aston.module.values.enums.StorageType;
-
-import java.io.IOException;
-import java.util.Scanner;
-
-import org.aston.module.value.objects.Filename;
 
 public class Menu {
 
@@ -99,7 +98,7 @@ public class Menu {
                 String path = scanner.nextLine().trim();
                 BusStorageable storage = null;
                 try {
-                    Filename filename = new Filename(path, "JSON");
+                    JsonFilename filename = new JsonFilename(path);
                     storage = new FromJSONReader(filename, len);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
