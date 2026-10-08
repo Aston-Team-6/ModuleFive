@@ -1,11 +1,12 @@
-package org.aston.module.controller.writer;
+package org.aston.module.infrastructure.writers;
 
-import org.aston.module.interfaces.BusContract;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+
+import org.aston.module.domain.ports.BusContract;
 
 public class BusFileWriter {
 
