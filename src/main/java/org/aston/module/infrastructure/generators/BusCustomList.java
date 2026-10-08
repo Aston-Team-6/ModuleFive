@@ -1,12 +1,12 @@
-package org.aston.module.controller.generators;
+package org.aston.module.infrastructure.generators;
 
 import java.util.*;
 
 public class BusCustomList<T> implements List<T> {
     private Node<T> head;
     private Node<T> tail;
-    public BusCustomList()
-    {
+
+    public BusCustomList() {
         head = null;
     }
 
@@ -77,6 +77,7 @@ public class BusCustomList<T> implements List<T> {
         }
         return true;
     }
+
     private boolean removeNode(Node<T> element) {
         if (element != null) {
             if (element == head) {
@@ -97,6 +98,7 @@ public class BusCustomList<T> implements List<T> {
         }
         return false;
     }
+
     @Override
     public boolean remove(Object o) {
         Node<T> searcher = head;
@@ -117,8 +119,8 @@ public class BusCustomList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        if(c!= null && !c.isEmpty()){
-            for(T element : c){
+        if (c != null && !c.isEmpty()) {
+            for (T element : c) {
                 add((T) c);
             }
             return true;
@@ -160,12 +162,56 @@ public class BusCustomList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
+        int counter = 0;
+        Node<T> elemetBeforeIndex = null;
+        Node<T> elemetOnPosition = null;
+        Node<T> searcher = head;
+        while (searcher != null) {
+            if (counter == index - 1) {
+                elemetBeforeIndex = searcher;
 
+            }
+            if (counter == index) {
+                elemetOnPosition = searcher;
+                break;
+            }
+            searcher = searcher.next;
+            counter++;
+        }
+        if (counter == index && elemetOnPosition == null) {
+            elemetOnPosition = tail.next;
+        } else if (elemetOnPosition == null) {
+            throw new NoSuchElementException("Некорректная позиция для вставки");
+        }
+        Node<T> elementToInsert = new Node<T>(element);
+        if (elemetOnPosition == head) {
+            elementToInsert.next = head;
+            head = elementToInsert;
+        } else if (elemetOnPosition == tail.next) {
+            tail.next = elementToInsert;
+            tail = elementToInsert;
+            tail.next = null;
+        } else {
+            elemetBeforeIndex.next = elementToInsert;
+            elementToInsert.next = elemetOnPosition;
+            elemetOnPosition = elementToInsert;
+        }
     }
 
     @Override
     public T remove(int index) {
-        return null;
+        int counter = 0;
+        T removedValue = null;
+        Node<T> searcher = head;
+        while (searcher != null) {
+            if (counter == index) {
+                removedValue = searcher.data;
+                removeNode(searcher);
+                return removedValue;
+            }
+            searcher = searcher.next;
+        }
+        throw new NoSuchElementException("Неверный индекс элемента");
     }
 
     @Override
