@@ -40,7 +40,7 @@ public class Menu {
         boolean run = true;
         while (run) {
             printMenu();
-            int swt = ReadInt("Ваш выбор: ");
+            int swt = readInt("Ваш выбор: ");
             switch (swt) {
                 case 1 -> runSort();
                 case 2 -> {
@@ -86,7 +86,7 @@ public class Menu {
 
     private Length readLen() {
         while (true) {
-            int value = ReadInt("Введите размер коллекции: ");
+            int value = readInt("Введите размер коллекции: ");
             try {
                 return new Length(value);
             } catch (IllegalArgumentException ex) {
@@ -95,7 +95,7 @@ public class Menu {
         }
     }
 
-    private int ReadInt(String text) {
+    private int readInt(String text) {
         while (true) {
             System.out.print(text);
             String intStr = scanner.nextLine();
@@ -114,7 +114,7 @@ public class Menu {
         System.out.println("Рандом - 3");
 
         while (true) {
-            int swt = ReadInt("Выберите источник: ");
+            int swt = readInt("Выберите источник: ");
             switch (swt) {
                 case 1 -> { return StorageType.FILE; }
                 case 2 -> { return StorageType.INPUT; }
@@ -132,7 +132,7 @@ public class Menu {
         System.out.println("Пробег (доп задание) - 4");
 
         while (true) {
-            int swt = ReadInt("Выберите сортировку: ");
+            int swt = readInt("Выберите сортировку: ");
             switch (swt) {
                 case 1 -> { return SorterType.MODULE; }
                 case 2 -> { return SorterType.NUMBER; }
@@ -163,7 +163,7 @@ public class Menu {
             return;
         }
 
-        int choice = ReadInt("Сохранить результат в файл? 1 - да, 2 - нет: ");
+        int choice = readInt("Сохранить результат в файл? 1 - да, 2 - нет: ");
         scanner.nextLine();
         if (choice != 1) {
             return;
