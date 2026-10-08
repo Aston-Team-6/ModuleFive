@@ -2,6 +2,7 @@ package org.aston.module.presentation.view;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.aston.module.application.actions.SorterDataBusAction;
 import org.aston.module.application.dto.OutputBus;
@@ -11,21 +12,22 @@ import org.aston.module.domain.ports.BusContract;
 import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.domain.values.enums.SorterType;
 import org.aston.module.domain.values.enums.StorageType;
-import org.aston.module.domain.values.objects.JsonFilename;
 import org.aston.module.domain.values.objects.Length;
-import org.aston.module.infrastructure.generators.FromJSONReader;
-import org.aston.module.infrastructure.generators.RandomGenerator;
-import org.aston.module.infrastructure.generators.UsersInput;
-import org.aston.module.infrastructure.sort.BusEvenMileageSorter;
-import org.aston.module.infrastructure.sort.BusMileageSorter;
-import org.aston.module.infrastructure.sort.BusModelSorter;
-import org.aston.module.infrastructure.sort.BusNumberSorter;
+import org.aston.module.infrastructure.factories.SorterFactory;
+import org.aston.module.infrastructure.factories.StorageFactory;
 import org.aston.module.infrastructure.writers.BusFileWriter;
 
 public class Menu {
-
     private final Scanner scanner = new Scanner(System.in);
-    private final BusFileWriter fileWriter = new BusFileWriter();
+    private final SorterFactory sorterFactory;
+    private final StorageFactory storageFactory;
+    private final BusFileWriter fileWriter;
+
+    public Menu(SorterFactory sorterFactory, StorageFactory storageFactory, BusFileWriter fileWriter) {
+        this.sorterFactory = sorterFactory;
+        this.storageFactory = storageFactory;
+        this.fileWriter = fileWriter;
+    }
 
     private void printMenu() {
         System.out.println();
@@ -57,14 +59,19 @@ public class Menu {
     public void runSort() {
         try {
             StorageType typeStorage = chooseStorageType();
-            BusStorageable busStorageable = createStorage(typeStorage);
-            if (busStorageable == null) {
-                System.out.println("Не удалось создать источник данных.");
-                return;
+            Length len = readLen();
+
+            BusStorageable busStorageable;
+            if (typeStorage == StorageType.FILE) {
+                System.out.print("Введите путь до JSON-файла: ");
+                String path = scanner.nextLine().trim();
+                busStorageable = storageFactory.create(typeStorage, len, path);
+            } else {
+                busStorageable = storageFactory.create(typeStorage, len);
             }
 
             SorterType typeSorter = chooseSorterType();
-            BusSorterable sortable = createSort(typeSorter);
+            BusSorterable sortable = sorterFactory.create(typeSorter);
 
             SorterDataBusAction command = new SorterDataBusAction(busStorageable, sortable);
             OutputBus result = command.execute();
@@ -78,33 +85,6 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("Непредвиденная ошибка: " + e.getMessage());
         }
-    }
-
-    private BusSorterable createSort(SorterType type) {
-        return switch (type) {
-            case MODULE -> new BusModelSorter();
-            case NUMBER -> new BusNumberSorter();
-            case MILEAGE -> new BusMileageSorter();
-            case MILEAGE_ADDITIONAL -> new BusEvenMileageSorter();
-        };
-    }
-
-    private BusStorageable createStorage(StorageType type) {
-        Length len = readLen();
-        return switch (type) {
-            case FILE -> {
-                System.out.print("Введите путь до JSON-файла: ");
-                String path = scanner.nextLine().trim();
-                try {
-                    yield new FromJSONReader(new JsonFilename(path), len);
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                    yield null;
-                }
-            }
-            case INPUT -> new UsersInput(len);
-            case RANDOM -> new RandomGenerator(len);
-        };
     }
 
     private Length readLen() {
@@ -162,7 +142,7 @@ public class Menu {
 
     private void printResult(OutputBus result) {
         System.out.println();
-        System.out.println("РЕЗУЛЬТАТ:");
+        System.out.println("Результат:");
         System.out.println("Количество: " + result.busCount);
         System.out.println();
         if (result.busCollection == null || result.busCollection.isEmpty()) {
@@ -190,20 +170,15 @@ public class Menu {
         System.out.print("Введите путь до файла: ");
         String path = scanner.nextLine().trim();
 
-        CustomList<BusContract> customList = new CustomList<>();
-        BusContract first = null;
-        int count = 0;
-        for (BusContract bus : result.busCollection) {
-            customList.add(bus);
-            if (count == 0) {
-                first = bus;
-            }
-            count++;
-        }
+        int sourceSize = result.busCollection.size();
 
-        if (count == 1) {
-            customList.add(first);
-            customList.remove(first);
+        CustomList<BusContract> customList = result.busCollection.stream()
+                .collect(Collectors.toCollection(() -> new CustomList<BusContract>()));
+
+        if (sourceSize == 1) {
+            BusContract only = result.busCollection.iterator().next();
+            customList.add(only);
+            customList.remove(only);
         }
 
         fileWriter.writeCollection(customList, path);
