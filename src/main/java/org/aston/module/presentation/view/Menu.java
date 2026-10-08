@@ -8,6 +8,7 @@ import org.aston.module.application.dto.OutputBus;
 import org.aston.module.application.ports.BusSorterable;
 import org.aston.module.application.ports.BusStorageable;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.domain.values.enums.SorterType;
 import org.aston.module.domain.values.enums.StorageType;
 import org.aston.module.domain.values.objects.JsonFilename;
@@ -19,13 +20,12 @@ import org.aston.module.infrastructure.sort.BusEvenMileageSorter;
 import org.aston.module.infrastructure.sort.BusMileageSorter;
 import org.aston.module.infrastructure.sort.BusModelSorter;
 import org.aston.module.infrastructure.sort.BusNumberSorter;
+import org.aston.module.infrastructure.writers.BusFileWriter;
 
 public class Menu {
 
     private final Scanner scanner = new Scanner(System.in);
-
-    public Menu() {
-    }
+    private final BusFileWriter fileWriter = new BusFileWriter();
 
     private void printMenu() {
         System.out.println();
@@ -36,7 +36,6 @@ public class Menu {
 
     public void start() {
         boolean run = true;
-
         while (run) {
             printMenu();
             System.out.print("Ваш выбор: ");
@@ -44,17 +43,14 @@ public class Menu {
             scanner.nextLine();
 
             switch (swt) {
-                case 1 ->
-                    runSort();
+                case 1 -> runSort();
                 case 2 -> {
                     System.out.println("Выход из программы.");
                     run = false;
                 }
-                default ->
-                    System.out.println("Было выбрано не то число");
+                default -> System.out.println("Было выбрано не то число");
             }
         }
-
         scanner.close();
     }
 
@@ -62,7 +58,6 @@ public class Menu {
         try {
             StorageType typeStorage = chooseStorageType();
             BusStorageable busStorageable = createStorage(typeStorage);
-
             if (busStorageable == null) {
                 System.out.println("Не удалось создать источник данных.");
                 return;
@@ -75,6 +70,7 @@ public class Menu {
             OutputBus result = command.execute();
 
             printResult(result);
+            offerSaveToFile(result);
         } catch (IOException e) {
             System.out.println("Ошибка ввода/вывода: " + e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -86,34 +82,25 @@ public class Menu {
 
     private BusSorterable createSort(SorterType type) {
         return switch (type) {
-            case MODULE ->
-                new BusModelSorter();
-            case NUMBER ->
-                new BusNumberSorter();
-            case MILEAGE ->
-                new BusMileageSorter();
-            case MILEAGE_ADDITIONAL ->
-                new BusEvenMileageSorter();
-            default ->
-                throw new IllegalArgumentException("Неизвестный тип сортировки: " + type);
+            case MODULE -> new BusModelSorter();
+            case NUMBER -> new BusNumberSorter();
+            case MILEAGE -> new BusMileageSorter();
+            case MILEAGE_ADDITIONAL -> new BusEvenMileageSorter();
         };
     }
 
     private BusStorageable createStorage(StorageType type) {
         Length len = readLen();
-
         return switch (type) {
             case FILE -> {
                 System.out.print("Введите путь до JSON-файла: ");
                 String path = scanner.nextLine().trim();
-                BusStorageable storage = null;
                 try {
-                    JsonFilename filename = new JsonFilename(path);
-                    storage = new FromJSONReader(filename, len);
+                    yield new FromJSONReader(new JsonFilename(path), len);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
+                    yield null;
                 }
-                yield storage;
             }
             case INPUT -> new UsersInput(len);
             case RANDOM -> new RandomGenerator(len);
@@ -143,19 +130,11 @@ public class Menu {
             System.out.print("Выберите источник: ");
             int swt = scanner.nextInt();
             scanner.nextLine();
-
             switch (swt) {
-                case 1 -> {
-                    return StorageType.FILE;
-                }
-                case 2 -> {
-                    return StorageType.INPUT;
-                }
-                case 3 -> {
-                    return StorageType.RANDOM;
-                }
-                default ->
-                    System.out.println("Была выбрана цифра не из меню.");
+                case 1 -> { return StorageType.FILE; }
+                case 2 -> { return StorageType.INPUT; }
+                case 3 -> { return StorageType.RANDOM; }
+                default -> System.out.println("Была выбрана цифра не из меню.");
             }
         }
     }
@@ -171,22 +150,12 @@ public class Menu {
             System.out.print("Выберите сортировку: ");
             int swt = scanner.nextInt();
             scanner.nextLine();
-
             switch (swt) {
-                case 1 -> {
-                    return SorterType.MODULE;
-                }
-                case 2 -> {
-                    return SorterType.NUMBER;
-                }
-                case 3 -> {
-                    return SorterType.MILEAGE;
-                }
-                case 4 -> {
-                    return SorterType.MILEAGE_ADDITIONAL;
-                }
-                default ->
-                    System.out.println("Была выбрана цифра не из меню.");
+                case 1 -> { return SorterType.MODULE; }
+                case 2 -> { return SorterType.NUMBER; }
+                case 3 -> { return SorterType.MILEAGE; }
+                case 4 -> { return SorterType.MILEAGE_ADDITIONAL; }
+                default -> System.out.println("Была выбрана цифра не из меню.");
             }
         }
     }
@@ -204,5 +173,40 @@ public class Menu {
             }
         }
         System.out.println();
+    }
+
+    private void offerSaveToFile(OutputBus result) {
+        if (result.busCollection == null || result.busCollection.isEmpty()) {
+            return;
+        }
+
+        System.out.print("Сохранить результат в файл? 1 - да, 2 - нет: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice != 1) {
+            return;
+        }
+
+        System.out.print("Введите путь до файла: ");
+        String path = scanner.nextLine().trim();
+
+        CustomList<BusContract> customList = new CustomList<>();
+        BusContract first = null;
+        int count = 0;
+        for (BusContract bus : result.busCollection) {
+            customList.add(bus);
+            if (count == 0) {
+                first = bus;
+            }
+            count++;
+        }
+
+        if (count == 1) {
+            customList.add(first);
+            customList.remove(first);
+        }
+
+        fileWriter.writeCollection(customList, path);
+        System.out.println("Результат сохранён в файл: " + path);
     }
 }
