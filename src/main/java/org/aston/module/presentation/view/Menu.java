@@ -40,10 +40,7 @@ public class Menu {
         boolean run = true;
         while (run) {
             printMenu();
-            System.out.print("Ваш выбор: ");
-            int swt = scanner.nextInt();
-            scanner.nextLine();
-
+            int swt = ReadInt("Ваш выбор: ");
             switch (swt) {
                 case 1 -> runSort();
                 case 2 -> {
@@ -89,12 +86,22 @@ public class Menu {
 
     private Length readLen() {
         while (true) {
-            System.out.print("Введите размер коллекции: ");
-            int value = scanner.nextInt();
-            scanner.nextLine();
+            int value = ReadInt("Введите размер коллекции: ");
             try {
                 return new Length(value);
             } catch (IllegalArgumentException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    private int ReadInt(String text) {
+        while (true) {
+            System.out.print(text);
+            String intStr = scanner.nextLine();
+            try {
+                return Integer.parseInt(intStr);
+            } catch (NumberFormatException ex) {
                 System.out.println(ex.getMessage());
             }
         }
@@ -107,9 +114,7 @@ public class Menu {
         System.out.println("Рандом - 3");
 
         while (true) {
-            System.out.print("Выберите источник: ");
-            int swt = scanner.nextInt();
-            scanner.nextLine();
+            int swt = ReadInt("Выберите источник: ");
             switch (swt) {
                 case 1 -> { return StorageType.FILE; }
                 case 2 -> { return StorageType.INPUT; }
@@ -124,12 +129,10 @@ public class Menu {
         System.out.println("Модель - 1");
         System.out.println("Номер - 2");
         System.out.println("Пробег - 3");
-        System.out.println("Пробег (доп задание 2) - 4");
+        System.out.println("Пробег (доп задание) - 4");
 
         while (true) {
-            System.out.print("Выберите сортировку: ");
-            int swt = scanner.nextInt();
-            scanner.nextLine();
+            int swt = ReadInt("Выберите сортировку: ");
             switch (swt) {
                 case 1 -> { return SorterType.MODULE; }
                 case 2 -> { return SorterType.NUMBER; }
@@ -160,8 +163,7 @@ public class Menu {
             return;
         }
 
-        System.out.print("Сохранить результат в файл? 1 - да, 2 - нет: ");
-        int choice = scanner.nextInt();
+        int choice = ReadInt("Сохранить результат в файл? 1 - да, 2 - нет: ");
         scanner.nextLine();
         if (choice != 1) {
             return;
