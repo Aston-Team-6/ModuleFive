@@ -1,4 +1,4 @@
-package org.aston.module.infrastructure.generators;
+package org.aston.module.domain.values.collections;
 
 import java.util.*;
 
