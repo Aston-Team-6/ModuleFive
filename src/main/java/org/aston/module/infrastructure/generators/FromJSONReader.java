@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.aston.module.domain.builder.BusBuilder;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.domain.values.objects.JsonFilename;
 import org.aston.module.domain.values.objects.Length;
 
@@ -57,6 +58,6 @@ public class FromJSONReader extends BusCollectionGenerator {
                     return createBus((String) fieldValues[0], (String) fieldValues[1], Float.valueOf(fieldValues[2].toString()));
                 })
                 .limit(length.getValue())
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(CustomList::new));
     }
 }

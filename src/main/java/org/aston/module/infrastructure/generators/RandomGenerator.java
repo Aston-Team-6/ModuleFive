@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import org.aston.module.domain.builder.BusBuilder;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.domain.values.objects.Length;
 
 public class RandomGenerator extends BusCollectionGenerator {
@@ -64,6 +65,6 @@ public class RandomGenerator extends BusCollectionGenerator {
         return Stream
                 .generate(() -> createBus())
                 .limit(length.getValue())
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(CustomList::new));
     }
 }

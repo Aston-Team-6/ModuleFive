@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.aston.module.application.ports.BusSorterable;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.infrastructure.sort.BusMileageSorter;
 import org.aston.module.infrastructure.sort.BusModelSorter;
 import org.aston.module.infrastructure.sort.BusNumberSorter;
@@ -24,7 +25,7 @@ public class BusSorterTest {
     public void BusMileageSorterTest() {
         BusSorterable sorter = new BusMileageSorter();
 
-        Collection<BusContract> busCollection = new ArrayList<>();
+        Collection<BusContract> busCollection = new CustomList<>();
 
         var bus3 = Mockito.mock(BusContract.class);
         Mockito.when(bus3.getMileage()).thenReturn(Float.valueOf(15));
@@ -51,7 +52,7 @@ public class BusSorterTest {
     public void BusModelSorterTest() {
         BusSorterable sorter = new BusModelSorter();
 
-        Collection<BusContract> busCollection = new ArrayList<>();
+        Collection<BusContract> busCollection = new CustomList<>();
 
         var bus3 = Mockito.mock(BusContract.class);
         Mockito.when(bus3.getModel()).thenReturn("NTH123");
@@ -78,7 +79,7 @@ public class BusSorterTest {
     public void BusNumberSorterTest() {
         BusSorterable sorter = new BusNumberSorter();
 
-        Collection<BusContract> busCollection = new ArrayList<>();
+        Collection<BusContract> busCollection = new CustomList<>();
 
         var bus3 = Mockito.mock(BusContract.class);
         Mockito.when(bus3.getNumber()).thenReturn("NTH123");
