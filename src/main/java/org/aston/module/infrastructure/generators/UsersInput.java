@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import org.aston.module.domain.builder.BusBuilder;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.domain.values.objects.Length;
 
 public class UsersInput extends BusCollectionGenerator{
@@ -53,7 +54,7 @@ public class UsersInput extends BusCollectionGenerator{
 		Collection<BusContract> buses = Stream
 				.generate(()->createBus())
 				.limit(length.getValue())
-				.collect(Collectors.toList());
+				.collect(Collectors.toCollection(CustomList::new));
 		System.out.println("Collection filled");
 		return buses;
 	}

@@ -50,7 +50,7 @@ public class BusCustomList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new CLIterator<T>(this);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class BusCustomList<T> implements List<T> {
     public boolean addAll(Collection<? extends T> c) {
         if (c != null && !c.isEmpty()) {
             for (T element : c) {
-                add((T) c);
+                add(element);
             }
             return true;
         }
@@ -145,7 +145,7 @@ public class BusCustomList<T> implements List<T> {
 
     @Override
     public void clear() {
-
+        head = null;
     }
 
     @Override
