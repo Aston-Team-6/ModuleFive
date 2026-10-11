@@ -122,7 +122,7 @@ public class CustomList<T> implements Collection<T> {
     public boolean addAll(Collection<? extends T> c) {
         if(c!= null && !c.isEmpty()){
             for(T element : c){
-                add((T) c);
+                add(element);
             }
             return true;
         }
@@ -141,7 +141,7 @@ public class CustomList<T> implements Collection<T> {
 
     @Override
     public void clear() {
-
+        head = null;
     }
 
     public void set(int i, T t) {

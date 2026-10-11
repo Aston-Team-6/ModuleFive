@@ -6,13 +6,14 @@ import java.util.List;
 
 import org.aston.module.application.ports.BusSorterable;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 
 public class BusEvenMileageSorter implements BusSorterable {
 
     @Override
     public Collection<BusContract> sortData(Collection<BusContract> data) {
 
-        List<BusContract> result = new ArrayList<>(data);
+        CustomList<BusContract> result = new CustomList<>(data);
 
         for (int i = 0; i < result.size() - 1; i++) {
 

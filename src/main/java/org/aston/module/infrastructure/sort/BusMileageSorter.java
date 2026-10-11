@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.aston.module.application.ports.BusSorterable;
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 
 /**
  * Sorts buses by mileage in ascending order.
@@ -16,7 +17,7 @@ public class BusMileageSorter implements BusSorterable {
 
     @Override
     public Collection<BusContract> sortData(Collection<BusContract> buscCollection) {
-        List<BusContract> buses = new ArrayList<>(buscCollection);
+        CustomList<BusContract> buses = new CustomList<>(buscCollection);
 
         for (int i = 0; i < buses.size() - 1; i++) {
             int minIndex = i;

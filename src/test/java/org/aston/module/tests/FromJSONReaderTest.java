@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.aston.module.domain.ports.BusContract;
+import org.aston.module.domain.values.collections.CustomList;
 import org.aston.module.domain.values.objects.JsonFilename;
 import org.aston.module.domain.values.objects.Length;
 import org.aston.module.infrastructure.generators.FromJSONReader;
@@ -51,7 +52,7 @@ class FromJSONReaderTest {
 
     @Test
     void fillCollection() throws IOException {
-        List<BusContract> resulBuses = (List<BusContract>) jsonReader.fillCollection();
+        CustomList<BusContract> resulBuses = (CustomList<BusContract>) jsonReader.fillCollection();
         BusContract bus = resulBuses.get(0);
         assertEquals(bus.getNumber(), "T454");
         assertEquals(bus.getModel(), "R343");
